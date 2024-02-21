@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask, stream_with_context
 
 app = Flask(__name__)
