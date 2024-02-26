@@ -4,22 +4,31 @@ import json
 
 
 example_data = {
-    'yes': [
-        [1,1,1,1],
-        [1,1,1,0],
-        [0,1,1,1],
-        [1,0,0,1],
-        [0,0,0,1]
+    'trash': [
+        [
+            ['Bottle'],
+            ['Other', 'plastic', 'bottle']
+        ],
+        [
+            ['Broken', 'glass'],
+            []
+        ],
     ],
-    'no': [
-        [0,0,0,0],
-        [1,0,0,0],
-        [0,1,0,0],
-        [0,0,1,0],
-        [1,1,0,0]
+    'recycle': [
+        [
+            ['Bottle'],
+            ['Clear', 'plastic', 'bottle']
+        ],
+        [
+            ['Bottle'], 
+            ['Other', 'plastic', 'bottle']
+        ],
+        ['Cup', 'Other', 'plastic', 'cup']
+    ],
+    'compost': [
+        ['']
     ]
 }
-
 
 
 class Dataset:
@@ -29,20 +38,21 @@ class Dataset:
         self.length = sum([len(i) for i in data.values()])
 
     def get_class(self, class_name):
+        if class_name not in self.classes:
+            raise ValueError(f"Class {class_name} not found")
+        print(len(self.data[class_name]))
         return self.data[class_name]
     
     def get_probability(self, value, class_name):
         class_data = self.get_class(class_name)
-        print(class_data)
-        return sum([1 for i in class_data if i == value]) / len(class_data)
+        # print(class_data)
+        ans = (sum([1 for i in class_data if i == value]) + 1) / len(class_data)
+        print(ans)
+        return ans
 
     def get_class_probability(self, class_name):
-        # print(self.length)
+        print(self.length)
         return len(self.get_class(class_name)) / self.length
-    
-    def get_probability(self, value, class_name):
-        class_data = self.get_class(class_name)
-        return sum([1 for i in class_data if i == value]) / len(class_data)
     
     
     def add_data(self, class_name, values):
